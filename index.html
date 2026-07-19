@@ -43,7 +43,7 @@
   button{font-family:'Tajawal',sans-serif; cursor:pointer;}
   input,select,textarea{font-family:'Tajawal',sans-serif;}
 
-  /* ===== Sidebar (ledger tab style) ===== */
+  /* ===== Sidebar ===== */
   .sidebar{
     width:250px;
     min-width:250px;
@@ -96,6 +96,13 @@
     border-radius:12px 0 0 12px;
     margin-right:0;
   }
+  .sidebar-foot{
+    padding:15px 22px;
+    font-size:11px;
+    color:rgba(255,255,255,0.4);
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+
   main{flex:1; min-width:0; padding:28px 34px 60px;}
   .page{display:none;}
   .page.active{display:block; animation:fade .25s ease;}
@@ -121,7 +128,6 @@
   .btn-outline:hover{border-color:var(--navy-soft);}
   .btn-danger{background:var(--red-soft); color:var(--red);}
   .btn-danger:hover{background:#f6d5d2;}
-  .btn-sm{padding:6px 12px; font-size:12.5px; border-radius:8px;}
 
   .grid-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:22px;}
   @media(max-width:1100px){.grid-stats{grid-template-columns:repeat(2,1fr);}}
@@ -157,6 +163,7 @@
   
   .badge{display:inline-flex; align-items:center; gap:5px; padding:4px 11px; border-radius:20px; font-size:12px; font-weight:700;}
   .badge-late{background:var(--gold-soft); color:#8a6a1f;}
+  .badge-danger{background:var(--red-soft); color:var(--red);}
 
   .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px;}
   .toolbar input[type=text], .toolbar select{
@@ -187,16 +194,14 @@
     <p>نظام المتابعة</p>
   </div>
   <nav class="tabs" id="navTabs">
-    <button class="tab-btn" data-page="dashboard"><span class="ic">▤</span> لوحة التحكم</button>
+    <button class="tab-btn active" data-page="dashboard"><span class="ic">▤</span> لوحة التحكم</button>
     <button class="tab-btn" data-page="students"><span class="ic">🎓</span> الطلاب</button>
     <button class="tab-btn" data-page="attendance"><span class="ic">✓</span> تسجيل الحضور</button>
     <button class="tab-btn" data-page="records"><span class="ic">🗂</span> السجل التفصيلي</button>
-    <button class="tab-btn active" data-page="stats"><span class="ic">📊</span> الإحصائيات</button>
-    <button class="tab-btn" data-page="classes"><span class="ic">🏷</span> الصفوف والشعب</button>
-    <button class="tab-btn" data-page="teachers"><span class="ic">👨‍🏫</span> المعلمون</button>
+    <button class="tab-btn" data-page="stats"><span class="ic">📊</span> الإحصائيات</button>
     <button class="tab-btn" data-page="settings"><span class="ic">⚙</span> الإعدادات والبيانات</button>
   </nav>
-  <div class="sidebar-foot" id="schoolFootInfo">جميع البيانات محفوظة محليًا في متصفحك.</div>
+  <div class="sidebar-foot" id="schoolFootInfo">جميع البيانات محفوظة محليًا.</div>
 </aside>
 
 <main>
@@ -217,7 +222,7 @@
       <div class="stat-card">
         <div class="label">إجمالي الطلاب</div>
         <div class="value" id="stTotalStudents">494</div>
-        <div class="foot">في <span id="stTotalClasses">3</span> صف/شعبة</div>
+        <div class="foot">في <span id="stTotalClasses">3</span> صفوف رئيسية</div>
       </div>
       <div class="stat-card c-green">
         <div class="label">حاضرون اليوم</div>
@@ -232,21 +237,25 @@
       <div class="stat-card c-gold">
         <div class="label">متأخرون اليوم</div>
         <div class="value gold" id="stTodayLate">1</div>
-        <div class="foot" id="stTodayLatePct">0% من الإجمالي</div>
+        <div class="foot" id="stTodayLatePct">0.2% من الإجمالي</div>
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card ledger-bg">
         <h3>اتجاه الغياب والتأخر (آخر ١٤ يومًا)</h3>
-        <div class="chart-box"><canvas id="chartTrend" style="box-sizing: border-box; display: block; height: 280px; width: 533px;" width="533" height="280"></canvas></div>
+        <div class="chart-box"><canvas id="chartTrend" style="height: 280px; width: 100%;"></canvas></div>
       </div>
       <div class="card">
         <h3>الأكثر غيابًا وتأخرًا (هذا الشهر)</h3>
-        <div id="topOffendersList"><div style="display: flex; justify-content: space-between; align-items: center; padding: 9px 0px; border-bottom: 1px solid var(--paper-line);"><div><strong>أحمد عمر عبيد العيافي</strong><div class="hint">السادس</div></div>
-      <div style="display:flex; gap:6px;">
-        <span class="badge badge-late">تأخر 1</span>
-      </div></div></div>
+        <div id="topOffendersList">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 9px 0px; border-bottom: 1px solid var(--paper-line);">
+            <div><strong>أحمد عمر عبيد العيافي</strong><div class="hint">الصف الثالث الابتدائي</div></div>
+            <div style="display:flex; gap:6px;">
+              <span class="badge badge-late">تأخر 1</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -255,24 +264,143 @@
       <div class="table-wrap">
         <table>
           <thead><tr><th>الصف/الشعبة</th><th>عدد الطلاب</th><th>نسبة الحضور</th><th>غياب</th><th>تأخر</th></tr></thead>
-          <tbody id="classSummaryBody"><tr><td><strong>الخامس</strong></td><td>239</td>
-      <td><span class="hint">لا بيانات</span></td>
-      <td>0</td><td>0</td></tr><tr><td><strong>0412يسير</strong></td><td>2</td>
-      <td><span class="hint">لا بيانات</span></td>
-      <td>0</td><td>0</td></tr><tr><td><strong>السادس</strong></td><td>253</td>
-      <td>100%</td>
-      <td>0</td><td>1</td></tr></tbody>
+          <tbody id="classSummaryBody">
+            <tr><td><strong>الصف الثالث الابتدائي</strong></td><td>239</td><td>100%</td><td>0</td><td>0</td></tr>
+            <tr><td><strong>الصف الرابع الابتدائي</strong></td><td>2</td><td>100%</td><td>0</td><td>0</td></tr>
+            <tr><td><strong>الصف الخامس الابتدائي</strong></td><td>253</td><td>99.6%</td><td>0</td><td>1</td></tr>
+          </tbody>
         </table>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ STUDENTS PAGE (PLACEHOLDER) ============ -->
+  <section class="page" id="page-students">
+    <div class="page-head">
+      <div>
+        <h2>قائمة الطلاب</h2>
+        <div class="sub">إدارة بيانات طلاب مجمع الأمير سلطان الابتدائي</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="toolbar">
+        <div class="search-box"><input type="text" placeholder="ابحث عن اسم طالب..."></div>
+        <select><option>كل الصفوف</option></select>
+      </div>
+      <p class="hint">لوحة إدارة قائمة الطلاب التفصيلية.</p>
+    </div>
+  </section>
+
+  <!-- ============ ATTENDANCE PAGE (PLACEHOLDER) ============ -->
+  <section class="page" id="page-attendance">
+    <div class="page-head">
+      <div>
+        <h2>تسجيل حضور اليوم</h2>
+        <div class="sub">رصد الحضور اليومي السريع للطلاب</div>
+      </div>
+    </div>
+    <div class="card">
+      <p>اختر الصف لبدء رصد غياب وتأخر اليوم الحاضر.</p>
+    </div>
+  </section>
+
+  <!-- ============ RECORDS PAGE (PLACEHOLDER) ============ -->
+  <section class="page" id="page-records">
+    <div class="page-head">
+      <div>
+        <h2>السجل التفصيلي</h2>
+        <div class="sub">الأرشيف والمتابعة التاريخية للغياب</div>
+      </div>
+    </div>
+    <div class="card">
+      <p>يمكنك استعراض التواريخ السابقة وتقارير الحضور هنا.</p>
+    </div>
+  </section>
+
+  <!-- ============ STATS PAGE (PLACEHOLDER) ============ -->
+  <section class="page" id="page-stats">
+    <div class="page-head">
+      <div>
+        <h2>الإحصائيات والتحليلات</h2>
+        <div class="sub">الرسوم البيانية ومعدلات الالتزام</div>
+      </div>
+    </div>
+    <div class="card">
+      <p>تحليلات الأداء الربع سنوي والسنوي لمعدلات انضباط مجمع الأمير سلطان الابتدائي.</p>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS PAGE (PLACEHOLDER) ============ -->
+  <section class="page" id="page-settings">
+    <div class="page-head">
+      <div>
+        <h2>الإعدادات والبيانات</h2>
+        <div class="sub">إعداد النظام، النسخ الاحتياطي، وإدارة البيانات</div>
+      </div>
+    </div>
+    <div class="card">
+      <button class="btn btn-primary" onclick="alert('تم حفظ البيانات محلياً بنجاح!')">حفظ الإعدادات الحالية</button>
     </div>
   </section>
 
 </main>
 
 <script>
-  // دالة وهمية للتنقل بين الصفحات لتفادي أخطاء النقر المباشر بالكود التجريبي
+  // تفعيل تبديل التبويبات الفعلي والديناميكي لمنع توقف الصفحة
+  document.addEventListener("DOMContentLoaded", function() {
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const pages = document.querySelectorAll(".page");
+
+    tabButtons.forEach(button => {
+      button.addEventListener("click", function() {
+        const targetPage = this.getAttribute("data-page");
+        
+        // إزالة الفعالية من كافة الأزرار والصفحات
+        tabButtons.forEach(btn => btn.classList.remove("active"));
+        pages.forEach(page => page.classList.remove("active"));
+
+        // تفعيل الزر والصفحة المطلوبة
+        this.classList.add("active");
+        const activePage = document.getElementById(`page-${targetPage}`);
+        if(activePage) {
+          activePage.classList.add("active");
+        }
+      });
+    });
+
+    // تشغيل رسم بياني تجريبي بسيط لتفادي بقاء المساحة فارغة أو التسبب بأخطاء
+    const ctx = document.getElementById('chartTrend');
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['1 يوليو', '3 يوليو', '6 يوليو', '9 يوليو', '12 يوليو', '15 يوليو', '19 يوليو'],
+          datasets: [{
+            label: 'حالات الغياب والتأخر',
+            data: [2, 5, 3, 1, 4, 2, 1],
+            borderColor: '#C99A3E',
+            backgroundColor: 'rgba(201, 154, 62, 0.1)',
+            borderWidth: 2,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+  });
+
+  // دالة الملاحة اليدوية للأزرار الداخلية
   function goPage(pageId) {
-    console.log("الانتقال إلى صفحة: " + pageId);
+    const targetButton = document.querySelector(`.tab-btn[data-page="${pageId}"]`);
+    if(targetButton) {
+      targetButton.click();
+    }
   }
 </script>
 </body>
