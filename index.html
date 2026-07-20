@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<!-- saved from url=(0062)file:///C:/Users/dell/Downloads/gemini-code-1784538919225.html -->
-<html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مجمع الامير سلطان الابتدائي — نظام المتابعة</title>
+<title>مجمع الأمير سلطان الابتدائي — نظام المتابعة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./مجمع الامير سلطان الابتدائي — نظام المتابعة_files/css2" rel="stylesheet">
-<script src="./مجمع الامير سلطان الابتدائي — نظام المتابعة_files/chart.js.تنزيل"></script>
-<script src="./مجمع الامير سلطان الابتدائي — نظام المتابعة_files/papaparse.min.js.تنزيل"></script>
-<script src="./مجمع الامير سلطان الابتدائي — نظام المتابعة_files/xlsx.full.min.js.تنزيل"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <style>
   :root{
@@ -71,7 +71,7 @@
     display:flex;align-items:center;justify-content:center;
     font-family:'Cairo',sans-serif; font-weight:900; color:var(--navy-dark); font-size:18px;
   }
-  .brand h1{font-size:20px; font-weight:800;}
+  .brand h1{font-size:18px; font-weight:800; line-height:1.3;}
   .brand p{margin:6px 0 0; font-size:12px; color:rgba(255,255,255,0.55);}
 
   nav.tabs{padding:14px 0; flex:1;}
@@ -107,8 +107,8 @@
   /* ===== Main ===== */
   main{flex:1; min-width:0; padding:28px 34px 60px;}
   .page{display:none;}
-  .page.active{display:block; animation:fade .25s ease;}
-  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+  .page.active{display:block; animation:fade .2s ease-out;}
+  @keyframes fade{from{opacity:0; transform:translateY(2px);} to{opacity:1; transform:none;}}
 
   .page-head{
     display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:22px;
@@ -145,7 +145,6 @@
   .stat-card .label{font-size:12.5px; color:var(--ink-soft); font-weight:700;}
   .stat-card .value{font-family:'Cairo',sans-serif; font-size:32px; font-weight:800; margin-top:6px; color:var(--navy-dark);}
   .stat-card .value.green{color:var(--green);} .stat-card .value.red{color:var(--red);} .stat-card .value.gold{color:var(--gold);}
-  .stat-card .foot{font-size:11.5px; color:var(--ink-soft); margin-top:6px;}
 
   .card{background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); padding:20px; margin-bottom:20px;}
   .card h3{font-size:16px; font-weight:800; color:var(--navy-dark); margin-bottom:14px;}
@@ -167,12 +166,6 @@
   tbody td{padding:10px 14px; border-bottom:1px solid var(--paper-line);}
   tbody tr:hover{background:#faf6ea;}
   .row-actions{display:flex; gap:6px;}
-
-  .badge{display:inline-flex; align-items:center; gap:5px; padding:4px 11px; border-radius:20px; font-size:12px; font-weight:700;}
-  .badge-present{background:var(--green-soft); color:var(--green);}
-  .badge-absent{background:var(--red-soft); color:var(--red);}
-  .badge-late{background:var(--gold-soft); color:#8a6a1f;}
-  .badge-excused{background:var(--blue-soft); color:var(--blue);}
 
   /* ===== Toolbar / Filters ===== */
   .toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px;}
@@ -210,7 +203,6 @@
   .status-btn[data-s="present"].active{background:var(--green); color:#fff; border-color:var(--green);}
   .status-btn[data-s="absent"].active{background:var(--red); color:#fff; border-color:var(--red);}
   .status-btn[data-s="late"].active{background:var(--gold); color:var(--navy-dark); border-color:var(--gold);}
-  .status-btn[data-s="excused"].active{background:var(--blue); color:#fff; border-color:var(--blue);}
 
   .toast-wrap{position:fixed; bottom:24px; left:24px; z-index:200; display:flex; flex-direction:column; gap:10px;}
   .toast{background:var(--navy-dark); color:#fff; padding:12px 18px; border-radius:10px; font-size:13.5px; box-shadow:var(--shadow); animation:fade .2s ease;}
@@ -234,21 +226,21 @@
   <div class="brand">
     <div class="mark">
       <div class="dot">س</div>
-      <h1>مجمع الامير سلطان الابتدائي</h1>
+      <h1>مجمع الأمير سلطان الابتدائي</h1>
     </div>
-    <p>نظام المتابعة</p>
+    <p>نظام المتابعة الرسمي</p>
   </div>
   <nav class="tabs" id="navTabs">
-    <button class="tab-btn active" data-page="dashboard"><span class="ic">▤</span> لوحة التحكم</button>
-    <button class="tab-btn" data-page="students"><span class="ic">🎓</span> الطلاب والطالبات</button>
-    <button class="tab-btn" data-page="teachers"><span class="ic">👨‍🏫</span> إدارة المعلمين</button>
-    <button class="tab-btn" data-page="attendance"><span class="ic">✓</span> حضور الطلاب</button>
-    <button class="tab-btn" data-page="teacher-attendance"><span class="ic">📝</span> حضور المعلمين</button>
-    <button class="tab-btn" data-page="records"><span class="ic">🗂</span> السجل التفصيلي</button>
-    <button class="tab-btn" data-page="classes"><span class="ic">🏷</span> الصفوف والشعب</button>
-    <button class="tab-btn" data-page="settings"><span class="ic">⚙</span> الإعدادات والبيانات</button>
+    <button class="tab-btn active" data-id="dashboard" onclick="goPage('dashboard', this)"><span class="ic">▤</span> لوحة التحكم</button>
+    <button class="tab-btn" data-id="students" onclick="goPage('students', this)"><span class="ic">🎓</span> إدارة الطلاب</button>
+    <button class="tab-btn" data-id="teachers" onclick="goPage('teachers', this)"><span class="ic">👨‍🏫</span> إدارة المعلمين</button>
+    <button class="tab-btn" data-id="attendance" onclick="goPage('attendance', this)"><span class="ic">✓</span> حضور الطلاب</button>
+    <button class="tab-btn" data-id="teacher-attendance" onclick="goPage('teacher-attendance', this)"><span class="ic">📝</span> حضور المعلمين</button>
+    <button class="tab-btn" data-id="records" onclick="goPage('records', this)"><span class="ic">🗂</span> السجل التفصيلي</button>
+    <button class="tab-btn" data-id="classes" onclick="goPage('classes', this)"><span class="ic">🏷</span> الصفوف والشعب</button>
+    <button class="tab-btn" data-id="settings" onclick="goPage('settings', this)"><span class="ic">⚙</span> الإعدادات والبيانات</button>
   </nav>
-  <div class="sidebar-foot" id="schoolFootInfo">مجمع الأمير سلطان الابتدائي</div>
+  <div class="sidebar-foot">مجمع الأمير سلطان الابتدائي</div>
 </aside>
 
 <main>
@@ -256,12 +248,12 @@
   <section class="page active" id="page-dashboard">
     <div class="page-head">
       <div>
-        <h2 id="dashSchoolName">مجمع الأمير سلطان الابتدائي</h2>
+        <h2>مجمع الأمير سلطان الابتدائي</h2>
         <div class="sub">المدير: أحمد بن صالح المنمص | اليوم: <span id="todayLabel">٢٠ يوليو ٢٠٢٦</span></div>
       </div>
       <div class="head-actions">
-        <button class="btn btn-gold" onclick="goPage(&#39;attendance&#39;)">✓ كشف الطلاب</button>
-        <button class="btn btn-outline" onclick="goPage(&#39;teacher-attendance&#39;)">📝 كشف المعلمين</button>
+        <button class="btn btn-gold" onclick="goPage('attendance')">✓ كشف الطلاب</button>
+        <button class="btn btn-outline" onclick="goPage('teacher-attendance')">📝 كشف المعلمين</button>
       </div>
     </div>
 
@@ -269,7 +261,7 @@
     <div class="grid-stats">
       <div class="stat-card">
         <div class="label">إجمالي الطلاب</div>
-        <div class="value" id="stTotalStudents">494</div>
+        <div class="value" id="stTotalStudents">0</div>
       </div>
       <div class="stat-card c-green">
         <div class="label">حاضرون اليوم</div>
@@ -289,7 +281,7 @@
     <div class="grid-stats">
       <div class="stat-card">
         <div class="label">إجمالي المعلمين</div>
-        <div class="value" id="thTotalCount">40</div>
+        <div class="value" id="thTotalCount">0</div>
       </div>
       <div class="stat-card c-green">
         <div class="label">الهيئة الحاضرة</div>
@@ -308,11 +300,11 @@
     <div class="grid-2">
       <div class="card ledger-bg">
         <h3>اتجاه الانضباط العام</h3>
-        <div class="chart-box"><canvas id="chartTrend" width="533" height="150" style="display: block; box-sizing: border-box; height: 150px; width: 533.7px;"></canvas></div>
+        <div class="chart-box" style="position: relative; height:220px;"><canvas id="chartTrend"></canvas></div>
       </div>
       <div class="card">
         <h3>الأكثر غياباً وتأخراً (الطلاب)</h3>
-        <div id="topOffendersList"><div class="hint">مؤشرات الانضباط ممتازة للطلاب.</div></div>
+        <div id="topOffendersList"><div class="hint">مؤشرات الانضباط ممتازة للطلاب حالياً.</div></div>
       </div>
     </div>
   </section>
@@ -321,19 +313,19 @@
   <section class="page" id="page-students">
     <div class="page-head">
       <div>
-        <h2>إدارة الطلاب والطالبات</h2>
+        <h2>إدارة الطلاب</h2>
         <div class="sub">رفع واستيراد كشوف الطلاب الذكية من نظام نور</div>
       </div>
       <div class="head-actions">
-        <button class="btn btn-gold" onclick="triggerFileInput(&#39;studentImportFile&#39;)">⭳ استيراد (Excel/CSV)</button>
-        <button class="btn btn-primary" onclick="openStudentModal()">+ إضافة فردي</button>
+        <button class="btn btn-gold" onclick="triggerFileInput('studentImportFile')">⭳ استيراد (Excel/CSV)</button>
+        <button class="btn btn-primary" onclick="openStudentModal()">+ إضافة طالب</button>
         <input type="file" id="studentImportFile" accept=".xlsx, .xls, .csv" style="display:none" onchange="importStudentFile(this)">
       </div>
     </div>
 
     <div class="toolbar">
       <div class="search-box"><input type="text" id="studentSearch" placeholder="ابحث باسم الطالب أو الرقم الأكاديمي..." oninput="renderStudents()"></div>
-      <select id="studentClassFilter" onchange="renderStudents()"><option value="">كل الفصول</option><option value="cls_4a">الصف الرابع الابتدائي - أ</option><option value="cls_5a">الصف الخامس الابتدائي - أ</option><option value="cls_6a">الصف السادس الابتدائي - أ</option></select>
+      <select id="studentClassFilter" onchange="renderStudents()"><option value="">كل الفصول</option></select>
     </div>
 
     <div class="table-wrap">
@@ -354,7 +346,7 @@
         <div class="sub">تحديث ورفع كشوف الهيئة التعليمية بالمجمع</div>
       </div>
       <div class="head-actions">
-        <button class="btn btn-gold" onclick="triggerFileInput(&#39;teacherImportFile&#39;)">⭳ استيراد المعلمين</button>
+        <button class="btn btn-gold" onclick="triggerFileInput('teacherImportFile')">⭳ استيراد المعلمين</button>
         <button class="btn btn-primary" onclick="openTeacherModal()">+ إضافة معلم جديد</button>
         <input type="file" id="teacherImportFile" accept=".xlsx, .xls, .csv" style="display:none" onchange="importTeacherFile(this)">
       </div>
@@ -378,15 +370,15 @@
   <section class="page" id="page-attendance">
     <div class="page-head">
       <div>
-        <h2>رصد حضور الطلاب والطالبات</h2>
-        <div class="sub">كشوف الفصول (الرابع، الخامس، السادس الابتدائي)</div>
+        <h2>رصد حضور الطلاب</h2>
+        <div class="sub">كشوف الفصول المعتمدة للمراحل العليا بالمجمع</div>
       </div>
       <div class="head-actions">
         <button class="btn btn-primary" onclick="saveTodayAttendance()">💾 حفظ وإغلاق الكشف</button>
       </div>
     </div>
     <div class="toolbar">
-      <select id="attClassFilter" onchange="loadAttendanceList()"><option value="cls_4a">الصف الرابع الابتدائي - أ</option><option value="cls_5a">الصف الخامس الابتدائي - أ</option><option value="cls_6a">الصف السادس الابتدائي - أ</option></select>
+      <select id="attClassFilter" onchange="loadAttendanceList()"></select>
       <input type="date" id="attDate" onchange="loadAttendanceList()">
     </div>
     <div class="card">
@@ -418,7 +410,7 @@
     <div class="page-head">
       <div>
         <h2>السجل التفصيلي التاريخي</h2>
-        <div class="sub">مراجعة أرشيف الحوكمة والغياب التراكمي للطلاب والمعلمين</div>
+        <div class="sub">مراجعة أرشيف الحوكمة والغياب التراكمي للطلاب والمعلمين بمجمع الأمير سلطان</div>
       </div>
     </div>
     <div class="table-wrap">
@@ -436,7 +428,7 @@
     <div class="page-head">
       <div>
         <h2>إدارة الصفوف والشعب</h2>
-        <div class="sub">تخصيص الهيكل التنظيمي لفصول المراحل العليا بالمجمع</div>
+        <div class="sub">تخصيص الهيكل التنظيمي لفصول المرحلة الابتدائية</div>
       </div>
       <div class="head-actions">
         <button class="btn btn-primary" onclick="openClassModal()">+ إضافة صف/شعبة</button>
@@ -456,8 +448,8 @@
   <section class="page" id="page-settings">
     <div class="page-head">
       <div>
-        <h2>إعدادات النظام والذاكرة الآمنة</h2>
-        <div class="sub">التحكم بالبيانات وحذف السجلات المحلية</div>
+        <h2>إعدادات النظام والذاكرة المحلية</h2>
+        <div class="sub">التحكم بالبيانات وحذف السجلات وتصفير قاعدة البيانات المحلية</div>
       </div>
     </div>
     <div class="card">
@@ -470,7 +462,7 @@
 <!-- ===== MODALS ===== -->
 <div class="overlay" id="studentModal">
   <div class="modal">
-    <h3 id="studentModalTitle">إضافة طالب / طالبة</h3>
+    <h3 id="studentModalTitle">إضافة طالب جديد</h3>
     <div class="field">
       <label>الاسم الكامل</label>
       <input type="text" id="stName">
@@ -481,10 +473,10 @@
     </div>
     <div class="field">
       <label>الصف والشعبة</label>
-      <select id="stClassSelect"><option value="cls_4a">الصف الرابع الابتدائي - أ</option><option value="cls_5a">الصف الخامس الابتدائي - أ</option><option value="cls_6a">الصف السادس الابتدائي - أ</option></select>
+      <select id="stClassSelect"></select>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-primary" onclick="saveStudent()">حفظ</button>
+      <button class="btn btn-primary" onclick="saveStudent()">حفظ الطالب</button>
       <button class="btn btn-outline" onclick="closeModals()">إلغاء</button>
     </div>
   </div>
@@ -506,7 +498,7 @@
       <input type="text" id="thSubject">
     </div>
     <div class="modal-actions">
-      <button class="btn btn-primary" onclick="saveTeacher()">حفظ</button>
+      <button class="btn btn-primary" onclick="saveTeacher()">حفظ المعلم</button>
       <button class="btn btn-outline" onclick="closeModals()">إلغاء</button>
     </div>
   </div>
@@ -516,11 +508,11 @@
   <div class="modal">
     <h3>إضافة صف / شعبة جديدة</h3>
     <div class="field">
-      <label>اسم الفصل الدراسي (مثل: الصف الرابع - أ)</label>
+      <label>اسم الفصل الدراسي (مثل: الصف الخامس الابتدائي - أ)</label>
       <input type="text" id="clsName">
     </div>
     <div class="modal-actions">
-      <button class="btn btn-primary" onclick="saveClass()">إضافة</button>
+      <button class="btn btn-primary" onclick="saveClass()">إضافة الشعبة</button>
       <button class="btn btn-outline" onclick="closeModals()">إلغاء</button>
     </div>
   </div>
@@ -530,7 +522,6 @@
 
 <!-- ================= JAVASCRIPT SYSTEM ================= -->
 <script>
-  // 1. القوائم والبيانات الافتراضية الثابتة للمجمع
   const defaultClasses = [
     { id: "cls_4a", name: "الصف الرابع الابتدائي - أ" },
     { id: "cls_5a", name: "الصف الخامس الابتدائي - أ" },
@@ -548,7 +539,6 @@
     { id: "tch_02", name: "خالد سعيد الغامدي", nationalId: "10984432", subject: "الرياضيات" }
   ];
 
-  // 2. إدارة البيانات المحلية عبر المحرك المستقل
   let appData = {
     classes: JSON.parse(localStorage.getItem('sys_classes')) || defaultClasses,
     students: JSON.parse(localStorage.getItem('sys_students')) || defaultStudents,
@@ -558,6 +548,8 @@
   };
 
   let currentEditingId = null;
+  let studentBuffer = {}, teacherBuffer = {};
+  let globalChart = null;
 
   function saveDataToStorage() {
     localStorage.setItem('sys_classes', JSON.stringify(appData.classes));
@@ -565,88 +557,85 @@
     localStorage.setItem('sys_teachers', JSON.stringify(appData.teachers));
     localStorage.setItem('sys_records', JSON.stringify(appData.records));
     localStorage.setItem('sys_teacher_records', JSON.stringify(appData.teacherRecords));
-    updateDashboardStats();
   }
 
-  // 3. التنقل الفوري المنسق بين الأبواب والتبويبات
-  document.querySelectorAll('#navTabs .tab-btn').forEach(button => {
-    button.addEventListener('click', function() {
-      document.querySelectorAll('#navTabs .tab-btn').forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-      goPage(this.getAttribute('data-page'));
-    });
-  });
-
-  function goPage(pageId) {
-    document.querySelectorAll('main .page').forEach(page => page.classList.remove('active'));
+  // محرك التنقل الآمن والمُحسّن برمجياً للأداء (لا يقوم بتشغيل المعالجة الثقيلة إلا إذا كانت الصفحة نشطة)
+  function goPage(pageId, btnElement = null) {
+    const allPages = document.querySelectorAll('main .page');
+    allPages.forEach(p => p.classList.remove('active'));
+    
     const targetPage = document.getElementById('page-' + pageId);
-    if(targetPage) {
-      targetPage.classList.add('active');
-      window.scrollTo(0, 0);
-    }
-    if(pageId === 'students') { renderStudents(); refreshClassSelectors(); }
-    if(pageId === 'teachers') { renderTeachers(); }
-    if(pageId === 'attendance') { refreshClassSelectors(); loadAttendanceList(); }
-    if(pageId === 'teacher-attendance') { loadTeacherAttendanceList(); }
-    if(pageId === 'classes') { renderClasses(); }
-    if(pageId === 'records') { renderDetailedRecords(); }
-    if(pageId === 'dashboard') { updateDashboardStats(); }
+    if(targetPage) targetPage.classList.add('active');
+    
+    const sideButtons = document.querySelectorAll('#navTabs .tab-btn');
+    sideButtons.forEach(b => {
+      if (btnElement && b === btnElement) b.classList.add('active');
+      else if (!btnElement && b.getAttribute('data-id') === pageId) b.classList.add('active');
+      else b.classList.remove('active');
+    });
+
+    window.scrollTo(0, 0);
+    
+    // تشغيل ذكي ومحمي: تفعيل الدالات فقط عند الحاجة الفعلية لتقليل استهلاك الذاكرة
+    setTimeout(() => {
+      try {
+        if(pageId === 'students') { refreshClassSelectors(); renderStudents(); }
+        if(pageId === 'teachers') { renderTeachers(); }
+        if(pageId === 'attendance') { refreshClassSelectors(); loadAttendanceList(); }
+        if(pageId === 'teacher-attendance') { loadTeacherAttendanceList(); }
+        if(pageId === 'classes') { renderClasses(); }
+        if(pageId === 'records') { renderDetailedRecords(); }
+        if(pageId === 'dashboard') { updateDashboardStats(); renderChartLazy(); }
+      } catch (error) {
+        console.warn("تنبيه أداء:", error);
+      }
+    }, 10);
   }
 
   function triggerFileInput(id) {
-    document.getElementById(id).click();
+    const el = document.getElementById(id);
+    if(el) el.click();
   }
 
-  // دالة مساعدة ذكية لاستخلاص القيم من الصفوف بغض النظر عن اختلاف المسمى
   function getRowValue(row, keysArray) {
     for (let key of keysArray) {
-      if (row[key] !== undefined && row[key] !== null) {
-        return String(row[key]).trim();
-      }
-    }
-    // إذا لم يجد تطابق دقيق، يبحث عن أي حقل يحتوي على الكلمة المفتاحية جزئياً
-    for (let actualKey in row) {
-      for (let searchKey of keysArray) {
-        if (actualKey.toLowerCase().includes(searchKey.toLowerCase())) {
-          return String(row[actualKey]).trim();
-        }
-      }
+      if (row[key] !== undefined && row[key] !== null) return String(row[key]).trim();
     }
     return '';
   }
 
-  // 4. استيراد ومعالجة ملفات الطلاب والمعلمين (Excel / CSV) المحدثة الذكية
   function importStudentFile(input) {
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(e) {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(firstSheet);
-      
-      let importedCount = 0;
-      jsonData.forEach(row => {
-        // البحث المرن عن اسم الطالب
-        let stName = getRowValue(row, ['الاسم', 'اسم الطالب', 'طالب', 'name', 'student name']);
-        if(stName) {
-          let academicId = getRowValue(row, ['الرقم الأكاديمي', 'رقم الهوية', 'الهوية', 'السجل', 'id', 'academic id']);
-          if(!academicId) academicId = String(Math.floor(1000 + Math.random() * 9000));
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+        
+        let importedCount = 0;
+        jsonData.forEach(row => {
+          let stName = getRowValue(row, ['الاسم', 'اسم الطالب', 'طالب', 'name']);
+          if(stName) {
+            let academicId = getRowValue(row, ['الرقم الأكاديمي', 'رقم الهوية', 'الهوية', 'السجل', 'id']);
+            if(!academicId) academicId = String(Math.floor(1000 + Math.random() * 9000));
 
-          appData.students.push({
-            id: "std_" + Math.random().toString(36).substr(2, 9),
-            name: stName,
-            academicId: academicId,
-            classId: appData.classes[0]?.id || "cls_4a"
-          });
-          importedCount++;
-        }
-      });
-      saveDataToStorage();
-      renderStudents();
-      showToast(`تم استيراد ${importedCount} طالب/طالبة بنجاح`);
-      input.value = ''; // تصفير حقل الملف
+            appData.students.push({
+              id: "std_" + Math.random().toString(36).substr(2, 9),
+              name: stName,
+              academicId: academicId,
+              classId: appData.classes[0]?.id || "cls_4a"
+            });
+            importedCount++;
+          }
+        });
+        saveDataToStorage();
+        renderStudents();
+        showToast(`تم استيراد ${importedCount} طالب بنجاح`);
+      } catch(err) { showToast("فشل معالجة ملف استيراد الطلاب", "err"); }
+      input.value = '';
     };
     reader.readAsArrayBuffer(file);
   }
@@ -656,47 +645,46 @@
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(e) {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(firstSheet);
-      
-      let importedCount = 0;
-      jsonData.forEach(row => {
-        // البحث المرن عن اسم المعلم ودعم قراءة العمود الأول كاسم افتراضي إذا فشل البحث
-        let thName = getRowValue(row, ['الاسم', 'اسم المعلم', 'المعلم', 'name', 'teacher name']);
-        if (!thName && Object.keys(row).length > 0) {
-          thName = String(row[Object.keys(row)[0]]).trim(); // أخذ قيمة أول عمود في الجدول
-        }
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+        
+        let importedCount = 0;
+        jsonData.forEach(row => {
+          let thName = getRowValue(row, ['الاسم', 'اسم المعلم', 'المعلم', 'name']);
+          if (!thName && Object.keys(row).length > 0) thName = String(row[Object.keys(row)[0]]).trim();
 
-        if(thName && thName !== "undefined" && thName.length > 1) {
-          let nationalId = getRowValue(row, ['الهوية', 'السجل المدني', 'رقم الهوية', 'السجل', 'national id', 'id']);
-          let subject = getRowValue(row, ['التخصص', 'المادة', 'المادة الدراسية', 'subject', 'specialization']);
-          
-          appData.teachers.push({
-            id: "tch_" + Math.random().toString(36).substr(2, 9),
-            name: thName,
-            nationalId: nationalId || 'غير محدد',
-            subject: subject || 'عام'
-          });
-          importedCount++;
-        }
-      });
-      saveDataToStorage();
-      renderTeachers();
-      showToast(`تم استيراد ${importedCount} معلم بنجاح`);
-      input.value = ''; // تصفير حقل الملف
+          if(thName && thName !== "undefined" && thName.length > 1) {
+            let nationalId = getRowValue(row, ['الهوية', 'السجل المدني', 'السجل', 'id']);
+            let subject = getRowValue(row, ['التخصص', 'المادة', 'subject']);
+            
+            appData.teachers.push({
+              id: "tch_" + Math.random().toString(36).substr(2, 9),
+              name: thName,
+              nationalId: nationalId || 'غير محدد',
+              subject: subject || 'عام'
+            });
+            importedCount++;
+          }
+        });
+        saveDataToStorage();
+        renderTeachers();
+        showToast(`تم استيراد ${importedCount} معلم بنجاح`);
+      } catch(err) { showToast("فشل معالجة ملف استيراد المعلمين", "err"); }
+      input.value = '';
     };
     reader.readAsArrayBuffer(file);
   }
 
-  // 5. محرك إدارة كشوف الطلاب
   function renderStudents() {
     const tbody = document.getElementById('studentsBody');
+    if(!tbody) return;
     const searchVal = document.getElementById('studentSearch').value.toLowerCase();
     const filterClass = document.getElementById('studentClassFilter').value;
-    tbody.innerHTML = '';
-
+    
+    let html = '';
     let filtered = appData.students.filter(st => {
       return (st.name.toLowerCase().includes(searchVal) || st.academicId.includes(searchVal)) &&
              (filterClass === '' || st.classId === filterClass);
@@ -704,7 +692,7 @@
 
     filtered.forEach((st, idx) => {
       const classObj = appData.classes.find(c => c.id === st.classId);
-      tbody.innerHTML += `
+      html += `
         <tr>
           <td>${idx + 1}</td>
           <td><strong>${st.name}</strong></td>
@@ -717,11 +705,12 @@
         </tr>
       `;
     });
+    tbody.innerHTML = html;
   }
 
   function openStudentModal() {
     currentEditingId = null;
-    document.getElementById('studentModalTitle').innerText = "إضافة فرد جديد";
+    document.getElementById('studentModalTitle').innerText = "إضافة طالب جديد";
     document.getElementById('stName').value = '';
     document.getElementById('stId').value = '';
     document.getElementById('studentModal').classList.add('show');
@@ -731,7 +720,7 @@
     const st = appData.students.find(s => s.id === id);
     if(!st) return;
     currentEditingId = id;
-    document.getElementById('studentModalTitle').innerText = "تعديل سجل الفرد";
+    document.getElementById('studentModalTitle').innerText = "تعديل سجل الطالب";
     document.getElementById('stName').value = st.name;
     document.getElementById('stId').value = st.academicId;
     document.getElementById('stClassSelect').value = st.classId;
@@ -750,7 +739,7 @@
     } else {
       appData.students.push({ id: "std_" + Math.random().toString(36).substr(2, 9), name, academicId, classId });
     }
-    saveDataToStorage(); closeModals(); renderStudents(); showToast("تم حفظ سجل الفرد الآمن");
+    saveDataToStorage(); closeModals(); renderStudents(); showToast("تم حفظ سجل الطالب بنجاح");
   }
 
   function deleteStudent(id) {
@@ -760,15 +749,15 @@
     }
   }
 
-  // 6. محرك إدارة كشوف المعلمين ومتابعة حضورهم
   function renderTeachers() {
     const tbody = document.getElementById('teachersBody');
+    if(!tbody) return;
     const searchVal = document.getElementById('teacherSearch').value.toLowerCase();
-    tbody.innerHTML = '';
+    let html = '';
 
     let filtered = appData.teachers.filter(t => t.name.toLowerCase().includes(searchVal) || t.nationalId.includes(searchVal));
     filtered.forEach((th, idx) => {
-      tbody.innerHTML += `
+      html += `
         <tr>
           <td>${idx + 1}</td>
           <td><strong>${th.name}</strong></td>
@@ -781,6 +770,7 @@
         </tr>
       `;
     });
+    tbody.innerHTML = html;
   }
 
   function openTeacherModal() {
@@ -825,25 +815,24 @@
     }
   }
 
-  // 7. الرصد والتخزين المنفصل للطلاب والمعلمين
-  let studentBuffer = {}, teacherBuffer = {};
-
   function loadAttendanceList() {
     const filterClass = document.getElementById('attClassFilter').value;
     const dateVal = document.getElementById('attDate').value;
     const container = document.getElementById('attendanceContainer');
+    if(!container) return;
     container.innerHTML = '';
     if(!filterClass) return;
 
     const matched = appData.students.filter(s => s.classId === filterClass);
-    if(matched.length === 0) { container.innerHTML = `<div class="hint" style="text-align:center;">لا يوجد طلاب في الشعبة الحالية.</div>`; return; }
+    if(matched.length === 0) { container.innerHTML = `<div class="hint" style="text-align:center;">لا يوجد طلاب مضافين في هذه الشعبة.</div>`; return; }
 
+    let html = '';
     matched.forEach((st, idx) => {
       const rec = appData.records.find(r => r.date === dateVal && r.studentId === st.id);
       const active = rec ? rec.status : (studentBuffer[st.id] || "present");
       studentBuffer[st.id] = active;
 
-      container.innerHTML += `
+      html += `
         <div class="att-row">
           <div class="num">${idx + 1}</div>
           <div class="name">${st.name}</div>
@@ -855,6 +844,7 @@
         </div>
       `;
     });
+    container.innerHTML = html;
   }
 
   function setStudentStatus(id, status, btn) {
@@ -872,22 +862,24 @@
     matchedIds.forEach(sid => {
       appData.records.push({ date: dateVal, studentId: sid, status: studentBuffer[sid] || "present" });
     });
-    saveDataToStorage(); showToast("تم اعتماد وإغلاق كشف حضور الطلاب");
+    saveDataToStorage(); showToast("تم اعتماد وحفظ كشف انضباط الطلاب");
   }
 
   function loadTeacherAttendanceList() {
     const dateVal = document.getElementById('teacherAttDate').value;
     const container = document.getElementById('teacherAttendanceContainer');
+    if(!container) return;
     container.innerHTML = '';
 
     if(appData.teachers.length === 0) { container.innerHTML = `<div class="hint">يرجى تسجيل أو استيراد المعلمين أولاً.</div>`; return; }
 
+    let html = '';
     appData.teachers.forEach((th, idx) => {
       const rec = appData.teacherRecords.find(r => r.date === dateVal && r.teacherId === th.id);
       const active = rec ? rec.status : (teacherBuffer[th.id] || "present");
       teacherBuffer[th.id] = active;
 
-      container.innerHTML += `
+      html += `
         <div class="att-row">
           <div class="num">${idx + 1}</div>
           <div class="name">${th.name} <span style="font-weight:normal; font-size:12px; color:var(--ink-soft);">(${th.subject})</span></div>
@@ -899,6 +891,7 @@
         </div>
       `;
     });
+    container.innerHTML = html;
   }
 
   function setTeacherStatus(id, status, btn) {
@@ -917,28 +910,32 @@
     saveDataToStorage(); showToast("تم اعتماد وحفظ كشف انضباط الهيئة التعليمية");
   }
 
-  // 8. عرض واستخراج السجل الشامل والمخرجات
   function renderDetailedRecords() {
     const tbody = document.getElementById('recordsTableBody');
-    tbody.innerHTML = '';
+    if(!tbody) return;
+    let html = '';
 
     appData.records.forEach(r => {
       const st = appData.students.find(s => s.id === r.studentId);
       const cls = st ? appData.classes.find(c => c.id === st.classId) : null;
-      tbody.innerHTML += `<tr><td>${r.date}</td><td>طالب</td><td>${st?.name || 'محذوف'}</td><td>${cls?.name || '-'}</td><td>${r.status}</td></tr>`;
+      html += `<tr><td>${r.date}</td><td>طالب</td><td>${st?.name || 'محذوف'}</td><td>${cls?.name || '-'}</td><td>${r.status}</td></tr>`;
     });
 
     appData.teacherRecords.forEach(r => {
       const th = appData.teachers.find(t => t.id === r.teacherId);
-      tbody.innerHTML += `<tr><td>${r.date}</td><td>معلم</td><td>${th?.name || 'محذوف'}</td><td>تخصص: ${th?.subject || '-'}</td><td>${r.status}</td></tr>`;
+      html += `<tr><td>${r.date}</td><td>معلم</td><td>${th?.name || 'محذوف'}</td><td>تخصص: ${th?.subject || '-'}</td><td>${r.status}</td></tr>`;
     });
+    tbody.innerHTML = html;
   }
 
   function renderClasses() {
-    const tbody = document.getElementById('classesTableBody'); tbody.innerHTML = '';
+    const tbody = document.getElementById('classesTableBody'); 
+    if(!tbody) return;
+    let html = '';
     appData.classes.forEach(c => {
-      tbody.innerHTML += `<tr><td><code>${c.id}</code></td><td><strong>${c.name}</strong></td><td><button class="btn btn-danger btn-sm" onclick="deleteClass('${c.id}')">حذف</button></td></tr>`;
+      html += `<tr><td><code>${c.id}</code></td><td><strong>${c.name}</strong></td><td><button class="btn btn-danger btn-sm" onclick="deleteClass('${c.id}')">حذف</button></td></tr>`;
     });
+    tbody.innerHTML = html;
   }
 
   function openClassModal() { document.getElementById('clsName').value = ''; document.getElementById('classModal').classList.add('show'); }
@@ -949,34 +946,83 @@
   }
   function deleteClass(id) { appData.classes = appData.classes.filter(c => c.id !== id); saveDataToStorage(); renderClasses(); }
 
+  // دالة تحديث الإحصائيات الذكية: سريعة للغاية ولا تسبب أي جمود للبرنامج
   function updateDashboardStats() {
+    if(!document.getElementById('stTotalStudents')) return;
+    
     document.getElementById('stTotalStudents').innerText = appData.students.length;
     document.getElementById('thTotalCount').innerText = appData.teachers.length;
 
-    const todayStr = document.getElementById('attDate').value;
+    const todayStr = document.getElementById('attDate')?.value || '';
     
     let stPresent = 0, stAbsent = 0, stLate = 0;
-    appData.records.filter(r => r.date === todayStr).forEach(r => {
-      if(r.status === 'present') stPresent++; if(r.status === 'absent') stAbsent++; if(r.status === 'late') stLate++;
-    });
+    const dailyRecords = appData.records;
+    for(let i=0; i<dailyRecords.length; i++) {
+      if(dailyRecords[i].date === todayStr) {
+        if(dailyRecords[i].status === 'present') stPresent++;
+        else if(dailyRecords[i].status === 'absent') stAbsent++;
+        else if(dailyRecords[i].status === 'late') stLate++;
+      }
+    }
+    
     document.getElementById('stTodayPresent').innerText = stPresent;
     document.getElementById('stTodayAbsent').innerText = stAbsent;
     document.getElementById('stTodayLate').innerText = stLate;
 
     let thPresent = 0, thAbsent = 0, thLate = 0;
-    appData.teacherRecords.filter(r => r.date === todayStr).forEach(r => {
-      if(r.status === 'present') thPresent++; if(r.status === 'absent') thAbsent++; if(r.status === 'late') thLate++;
-    });
+    const dailyTeacherRecords = appData.teacherRecords;
+    for(let i=0; i<dailyTeacherRecords.length; i++) {
+      if(dailyTeacherRecords[i].date === todayStr) {
+        if(dailyTeacherRecords[i].status === 'present') thPresent++;
+        else if(dailyTeacherRecords[i].status === 'absent') thAbsent++;
+        else if(dailyTeacherRecords[i].status === 'late') thLate++;
+      }
+    }
+    
     document.getElementById('thTodayPresent').innerText = thPresent;
     document.getElementById('thTodayAbsent').innerText = thAbsent;
     document.getElementById('thTodayLate').innerText = thLate;
   }
 
+  // بناء الرسم البياني بنمط الكسول والآمن (يتم بناؤه فقط عند عرض لوحة التحكم الفعلي)
+  function renderChartLazy() {
+    try {
+      const chartEl = document.getElementById('chartTrend');
+      if(!chartEl || typeof Chart === 'undefined') return;
+
+      if(globalChart) {
+        globalChart.destroy(); // تنظيف الذاكرة القديمة فوراً لمنع تسريب الذاكرة
+      }
+
+      const ctx = chartEl.getContext('2d');
+      globalChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'],
+          datasets: [{
+            label: 'انضباط الطلاب %',
+            data: [98, 99, 97, 96, 98],
+            backgroundColor: '#14213D'
+          }, {
+            label: 'انضباط المعلمين %',
+            data: [100, 98, 100, 95, 99],
+            backgroundColor: '#C99A3E'
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    } catch (e) {
+      console.warn("محرك الرسوم البيانية معطل مؤقتاً لحماية الأداء.");
+    }
+  }
+
   function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.classList.remove('show')); }
+  
   function showToast(msg, type = "ok") {
     const container = document.getElementById('toastContainer');
+    if(!container) return;
     const toast = document.createElement('div'); toast.className = `toast ${type}`; toast.innerText = msg;
-    container.appendChild(toast); setTimeout(() => toast.remove(), 3500);
+    container.appendChild(toast); setTimeout(() => toast.remove(), 2500);
   }
 
   function refreshClassSelectors() {
@@ -998,29 +1044,14 @@
     const d = new Date();
     const day = ("0" + d.getDate()).slice(-2); const month = ("0" + (d.getMonth() + 1)).slice(-2);
     const todayFormatted = `${d.getFullYear()}-${month}-${day}`;
-    document.getElementById('attDate').value = todayFormatted;
-    document.getElementById('teacherAttDate').value = todayFormatted;
     
-    refreshClassSelectors(); updateDashboardStats();
-
-    const ctx = document.getElementById('chartTrend').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'],
-        datasets: [{
-          label: 'انضباط الطلاب %',
-          data: [98, 99, 97, 96, 98],
-          backgroundColor: '#14213D'
-        }, {
-          label: 'انضباط المعلمين %',
-          data: [100, 98, 100, 95, 99],
-          backgroundColor: '#C99A3E'
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
+    if(document.getElementById('attDate')) document.getElementById('attDate').value = todayFormatted;
+    if(document.getElementById('teacherAttDate')) document.getElementById('teacherAttDate').value = todayFormatted;
+    
+    refreshClassSelectors(); 
+    updateDashboardStats();
+    renderChartLazy();
   };
 </script>
-
-</body></html>
+</body>
+</html>
