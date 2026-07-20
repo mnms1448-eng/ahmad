@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0062)file:///C:/Users/dell/Downloads/gemini-code-1784538919225.html -->
+<html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مجمع الامير سلطان الابتدائي — نظام المتابعة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<link href="./مجمع الامير سلطان الابتدائي — نظام المتابعة_files/css2" rel="stylesheet">
+<script src="./مجمع الامير سلطان الابتدائي — نظام المتابعة_files/chart.js.تنزيل"></script>
+<script src="./مجمع الامير سلطان الابتدائي — نظام المتابعة_files/papaparse.min.js.تنزيل"></script>
+<script src="./مجمع الامير سلطان الابتدائي — نظام المتابعة_files/xlsx.full.min.js.تنزيل"></script>
 
 <style>
   :root{
@@ -260,8 +260,8 @@
         <div class="sub">المدير: أحمد بن صالح المنمص | اليوم: <span id="todayLabel">٢٠ يوليو ٢٠٢٦</span></div>
       </div>
       <div class="head-actions">
-        <button class="btn btn-gold" onclick="goPage('attendance')">✓ كشف الطلاب</button>
-        <button class="btn btn-outline" onclick="goPage('teacher-attendance')">📝 كشف المعلمين</button>
+        <button class="btn btn-gold" onclick="goPage(&#39;attendance&#39;)">✓ كشف الطلاب</button>
+        <button class="btn btn-outline" onclick="goPage(&#39;teacher-attendance&#39;)">📝 كشف المعلمين</button>
       </div>
     </div>
 
@@ -269,7 +269,7 @@
     <div class="grid-stats">
       <div class="stat-card">
         <div class="label">إجمالي الطلاب</div>
-        <div class="value" id="stTotalStudents">0</div>
+        <div class="value" id="stTotalStudents">494</div>
       </div>
       <div class="stat-card c-green">
         <div class="label">حاضرون اليوم</div>
@@ -289,7 +289,7 @@
     <div class="grid-stats">
       <div class="stat-card">
         <div class="label">إجمالي المعلمين</div>
-        <div class="value" id="thTotalCount">0</div>
+        <div class="value" id="thTotalCount">40</div>
       </div>
       <div class="stat-card c-green">
         <div class="label">الهيئة الحاضرة</div>
@@ -308,7 +308,7 @@
     <div class="grid-2">
       <div class="card ledger-bg">
         <h3>اتجاه الانضباط العام</h3>
-        <div class="chart-box"><canvas id="chartTrend"></canvas></div>
+        <div class="chart-box"><canvas id="chartTrend" width="533" height="150" style="display: block; box-sizing: border-box; height: 150px; width: 533.7px;"></canvas></div>
       </div>
       <div class="card">
         <h3>الأكثر غياباً وتأخراً (الطلاب)</h3>
@@ -325,7 +325,7 @@
         <div class="sub">رفع واستيراد كشوف الطلاب الذكية من نظام نور</div>
       </div>
       <div class="head-actions">
-        <button class="btn btn-gold" onclick="triggerFileInput('studentImportFile')">⭳ استيراد (Excel/CSV)</button>
+        <button class="btn btn-gold" onclick="triggerFileInput(&#39;studentImportFile&#39;)">⭳ استيراد (Excel/CSV)</button>
         <button class="btn btn-primary" onclick="openStudentModal()">+ إضافة فردي</button>
         <input type="file" id="studentImportFile" accept=".xlsx, .xls, .csv" style="display:none" onchange="importStudentFile(this)">
       </div>
@@ -333,7 +333,7 @@
 
     <div class="toolbar">
       <div class="search-box"><input type="text" id="studentSearch" placeholder="ابحث باسم الطالب أو الرقم الأكاديمي..." oninput="renderStudents()"></div>
-      <select id="studentClassFilter" onchange="renderStudents()"><option value="">كل الفصول</option></select>
+      <select id="studentClassFilter" onchange="renderStudents()"><option value="">كل الفصول</option><option value="cls_4a">الصف الرابع الابتدائي - أ</option><option value="cls_5a">الصف الخامس الابتدائي - أ</option><option value="cls_6a">الصف السادس الابتدائي - أ</option></select>
     </div>
 
     <div class="table-wrap">
@@ -354,7 +354,7 @@
         <div class="sub">تحديث ورفع كشوف الهيئة التعليمية بالمجمع</div>
       </div>
       <div class="head-actions">
-        <button class="btn btn-gold" onclick="triggerFileInput('teacherImportFile')">⭳ استيراد المعلمين</button>
+        <button class="btn btn-gold" onclick="triggerFileInput(&#39;teacherImportFile&#39;)">⭳ استيراد المعلمين</button>
         <button class="btn btn-primary" onclick="openTeacherModal()">+ إضافة معلم جديد</button>
         <input type="file" id="teacherImportFile" accept=".xlsx, .xls, .csv" style="display:none" onchange="importTeacherFile(this)">
       </div>
@@ -386,7 +386,7 @@
       </div>
     </div>
     <div class="toolbar">
-      <select id="attClassFilter" onchange="loadAttendanceList()"></select>
+      <select id="attClassFilter" onchange="loadAttendanceList()"><option value="cls_4a">الصف الرابع الابتدائي - أ</option><option value="cls_5a">الصف الخامس الابتدائي - أ</option><option value="cls_6a">الصف السادس الابتدائي - أ</option></select>
       <input type="date" id="attDate" onchange="loadAttendanceList()">
     </div>
     <div class="card">
@@ -481,7 +481,7 @@
     </div>
     <div class="field">
       <label>الصف والشعبة</label>
-      <select id="stClassSelect"></select>
+      <select id="stClassSelect"><option value="cls_4a">الصف الرابع الابتدائي - أ</option><option value="cls_5a">الصف الخامس الابتدائي - أ</option><option value="cls_6a">الصف السادس الابتدائي - أ</option></select>
     </div>
     <div class="modal-actions">
       <button class="btn btn-primary" onclick="saveStudent()">حفظ</button>
@@ -1022,5 +1022,5 @@
     });
   };
 </script>
-</body>
-</html>
+
+</body></html>
