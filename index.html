@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<!-- saved from url=(0037)https://mnms1448-eng.github.io/ahmad/ -->
 <html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مجمع الأمير سلطان الابتدائي — نظام المتابعة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./مجمع الأمير سلطان الابتدائي — نظام المتابعة_files/css2" rel="stylesheet">
-<script src="./مجمع الأمير سلطان الابتدائي — نظام المتابعة_files/chart.js.تنزيل"></script>
-<script src="./مجمع الأمير سلطان الابتدائي — نظام المتابعة_files/papaparse.min.js.تنزيل"></script>
-<script src="./مجمع الأمير سلطان الابتدائي — نظام المتابعة_files/xlsx.full.min.js.تنزيل"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- تم استبدال المكتبات المحلية بروابط CDN عالمية لضمان عملها مباشرة -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <style>
   :root{
@@ -201,7 +202,6 @@
     padding:7px 13px; border-radius:8px; border:1.5px solid var(--paper-line); background:#fff; font-size:12.5px; font-weight:700; color:var(--ink-soft); transition: all 0.15s ease;
   }
   
-  /* الحالات النشطة للأزرار بناءً على النوع */
   .status-btn.active-present{background:var(--green) !important; color:#fff !important; border-color:var(--green) !important;}
   .status-btn.active-absent{background:var(--red) !important; color:#fff !important; border-color:var(--red) !important;}
   .status-btn.active-late{background:var(--gold) !important; color:var(--navy-dark) !important; border-color:var(--gold) !important;}
@@ -302,7 +302,7 @@
     <div class="grid-2">
       <div class="card ledger-bg">
         <h3>اتجاه الانضباط العام</h3>
-        <div class="chart-box" style="position: relative; height:220px;"><canvas id="chartTrend" width="533" height="220" style="display: block; box-sizing: border-box; height: 220px; width: 533.7px;"></canvas></div>
+        <div class="chart-box" style="position: relative; height:220px;"><canvas id="chartTrend"></canvas></div>
       </div>
       <div class="card">
         <h3>الأكثر غياباً وتأخراً (الطلاب)</h3>
@@ -601,6 +601,14 @@
     for (let key of keysArray) {
       if (row[key] !== undefined && row[key] !== null) return String(row[key]).trim();
     }
+    // البحث التقريبي إذا لم يتطابق العنوان تماماً
+    for (let actualKey in row) {
+      for (let targetKey of keysArray) {
+        if (actualKey.includes(targetKey) || targetKey.includes(actualKey)) {
+          return String(row[actualKey]).trim();
+        }
+      }
+    }
     return '';
   }
 
@@ -610,16 +618,16 @@
     const reader = new FileReader();
     reader.onload = function(e) {
       try {
-        const data = new Uint8Array(e.target.result);
+        const data = e.target.result;
         const workbook = XLSX.read(data, { type: 'array' });
         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(firstSheet);
         
         let importedCount = 0;
         jsonData.forEach(row => {
-          let stName = getRowValue(row, ['الاسم', 'اسم الطالب', 'طالب', 'name']);
-          if(stName) {
-            let academicId = getRowValue(row, ['الرقم الأكاديمي', 'رقم الهوية', 'الهوية', 'السجل', 'id']);
+          let stName = getRowValue(row, ['الاسم', 'اسم الطالب', 'طالب', 'name', 'اسم']);
+          if(stName && stName !== "undefined") {
+            let academicId = getRowValue(row, ['الرقم الأكاديمي', 'رقم الهوية', 'الهوية', 'السجل', 'id', 'رقم']);
             if(!academicId) academicId = String(Math.floor(1000 + Math.random() * 9000));
 
             appData.students.push({
@@ -633,6 +641,7 @@
         });
         saveDataToStorage();
         renderStudents();
+        updateDashboardStats();
         showToast(`تم استيراد ${importedCount} طالب بنجاح`);
       } catch(err) { showToast("فشل معالجة ملف استيراد الطلاب", "err"); }
       input.value = '';
@@ -646,19 +655,19 @@
     const reader = new FileReader();
     reader.onload = function(e) {
       try {
-        const data = new Uint8Array(e.target.result);
+        const data = e.target.result;
         const workbook = XLSX.read(data, { type: 'array' });
         const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(firstSheet);
         
         let importedCount = 0;
         jsonData.forEach(row => {
-          let thName = getRowValue(row, ['الاسم', 'اسم المعلم', 'المعلم', 'name']);
+          let thName = getRowValue(row, ['الاسم', 'اسم المعلم', 'المعلم', 'name', 'الموظف']);
           if (!thName && Object.keys(row).length > 0) thName = String(row[Object.keys(row)[0]]).trim();
 
           if(thName && thName !== "undefined" && thName.length > 1) {
-            let nationalId = getRowValue(row, ['الهوية', 'السجل المدني', 'السجل', 'id']);
-            let subject = getRowValue(row, ['التخصص', 'المادة', 'subject']);
+            let nationalId = getRowValue(row, ['الهوية', 'السجل المدني', 'السجل', 'id', 'رقم']);
+            let subject = getRowValue(row, ['التخصص', 'المادة', 'subject', 'المادة الدراسية']);
             
             appData.teachers.push({
               id: "tch_" + Math.random().toString(36).substr(2, 9),
@@ -671,6 +680,7 @@
         });
         saveDataToStorage();
         renderTeachers();
+        updateDashboardStats();
         showToast(`تم استيراد ${importedCount} معلم بنجاح`);
       } catch(err) { showToast("فشل معالجة ملف استيراد المعلمين", "err"); }
       input.value = '';
@@ -739,13 +749,13 @@
     } else {
       appData.students.push({ id: "std_" + Math.random().toString(36).substr(2, 9), name, academicId, classId });
     }
-    saveDataToStorage(); closeModals(); renderStudents(); showToast("تم حفظ سجل الطالب بنجاح");
+    saveDataToStorage(); closeModals(); renderStudents(); updateDashboardStats(); showToast("تم حفظ سجل الطالب بنجاح");
   }
 
   function deleteStudent(id) {
     if(confirm("هل أنت متأكد من مسح بيانات السجل؟")) {
       appData.students = appData.students.filter(s => s.id !== id);
-      saveDataToStorage(); renderStudents(); showToast("تم الحذف بنجاح", "err");
+      saveDataToStorage(); renderStudents(); updateDashboardStats(); showToast("تم الحذف بنجاح", "err");
     }
   }
 
@@ -805,17 +815,16 @@
     } else {
       appData.teachers.push({ id: "tch_" + Math.random().toString(36).substr(2, 9), name, nationalId, subject });
     }
-    saveDataToStorage(); closeModals(); renderTeachers(); showToast("تم حفظ سجل المعلم");
+    saveDataToStorage(); closeModals(); renderTeachers(); updateDashboardStats(); showToast("تم حفظ سجل المعلم");
   }
 
   function deleteTeacher(id) {
     if(confirm("هل تود إزالة المعلم نهائياً؟")) {
       appData.teachers = appData.teachers.filter(t => t.id !== id);
-      saveDataToStorage(); renderTeachers(); showToast("تم الحذف بنجاح", "err");
+      saveDataToStorage(); renderTeachers(); updateDashboardStats(); showToast("تم الحذف بنجاح", "err");
     }
   }
 
-  // رصد الحضور والغياب للطلاب
   function loadAttendanceList() {
     const filterClass = document.getElementById('attClassFilter').value;
     const dateVal = document.getElementById('attDate').value;
@@ -848,7 +857,6 @@
     container.innerHTML = html;
   }
 
-  // الدالة المصلحة لتغيير لون وحالة أزرار الطلاب فوراً
   function setStudentStatus(id, status, btn) {
     studentBuffer[id] = status;
     const parent = btn.parentElement;
@@ -867,10 +875,9 @@
     matchedIds.forEach(sid => {
       appData.records.push({ date: dateVal, studentId: sid, status: studentBuffer[sid] || "present" });
     });
-    saveDataToStorage(); showToast("تم اعتماد وحفظ كشف انضباط الطلاب");
+    saveDataToStorage(); updateDashboardStats(); showToast("تم اعتماد وحفظ كشف انضباط الطلاب");
   }
 
-  // رصد الحضور والغياب للمعلمين
   function loadTeacherAttendanceList() {
     const dateVal = document.getElementById('teacherAttDate').value;
     const container = document.getElementById('teacherAttendanceContainer');
@@ -900,7 +907,6 @@
     container.innerHTML = html;
   }
 
-  // الدالة المصلحة لتغيير لون وحالة أزرار المعلمين فوراً
   function setTeacherStatus(id, status, btn) {
     teacherBuffer[id] = status;
     const parent = btn.parentElement;
@@ -917,7 +923,7 @@
     appData.teachers.forEach(th => {
       appData.teacherRecords.push({ date: dateVal, teacherId: th.id, status: teacherBuffer[th.id] || "present" });
     });
-    saveDataToStorage(); showToast("تم اعتماد وحفظ كشف انضباط الهيئة التعليمية");
+    saveDataToStorage(); updateDashboardStats(); showToast("تم اعتماد وحفظ كشف انضباط الهيئة التعليمية");
   }
 
   function renderDetailedRecords() {
@@ -952,9 +958,9 @@
   function saveClass() {
     const name = document.getElementById('clsName').value.trim(); if(!name) return;
     appData.classes.push({ id: "cls_" + Math.random().toString(36).substr(2, 9), name });
-    saveDataToStorage(); closeModals(); renderClasses();
+    saveDataToStorage(); closeModals(); renderClasses(); refreshClassSelectors();
   }
-  function deleteClass(id) { appData.classes = appData.classes.filter(c => c.id !== id); saveDataToStorage(); renderClasses(); }
+  function deleteClass(id) { appData.classes = appData.classes.filter(c => c.id !== id); saveDataToStorage(); renderClasses(); refreshClassSelectors(); }
 
   function updateDashboardStats() {
     if(!document.getElementById('stTotalStudents')) return;
